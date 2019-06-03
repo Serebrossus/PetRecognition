@@ -63,42 +63,21 @@ while video_capture.isOpened():
     results = model.detect([rgb_image], verbose=0)
     r = results[0]
 
-    if parked_cat_boxes is None:
-        # this is first frame
-        parked_cat_boxes = get_cat_boxes(r['rois'], r['class_ids'])
-    else:
-        print('Cats found in frame of video:')
-        cat_boxes = get_cat_boxes(r['rois'], r['class_ids'])
+    # easy
+    cat_boxes = get_cat_boxes(r['rois'], r['class_ids'])
+    
+    print("Cats found in frame of video:")
+    
+    for box in cat_boxes:
+        print("Cat: ", box)
 
-        overlaps = mrcnn.utils.compute_overlaps(parked_cat_boxes, cat_boxes)
+        y1,x1,y2,x2 = box
 
-        free_space = False
-        for parking_area, overlap_areas in zip(parked_cat_boxes, overlaps):
-            max_IoU_overlap = np.max(overlap_areas)
-            y1, x1, y2, x2 = parking_area
+        cv2.rectangle(frame, (x1,y1), (x2,y2), (0,255,0),1)
 
-            if max_IoU_overlap < 0.15:
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                free_space = True
-            else:
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 1)
-
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, '{max_IoU_overlap:0.2}', (x1 + 6, y2 - 6), font, 0.3, (255, 255, 255))
-
-        if free_space:
-            free_space_frames += 1
-        else:
-            free_space_frames = 0
-
-        if free_space_frames > 10:
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, "SPACE AVAILABLE!", (10, 150), font, 3.0, (0, 255, 0), 2, cv2.FILLED)
-
-        cv2.imshow("Video", frame)
-        # press 'q' to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+    cv2.imshow("Video", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 video_capture.release()
 cv2.destroyAllWindows()

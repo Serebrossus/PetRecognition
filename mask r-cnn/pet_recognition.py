@@ -3,6 +3,8 @@ import cv2
 import mrcnn.config
 import mrcnn.utils
 from mrcnn.model import MaskRCNN
+from pathlib import Path
+import os
 
 
 class MaskRCNNConfig(mrcnn.config.Config):
@@ -23,19 +25,19 @@ def get_cat_boxes(boxes, class_ids):
     return np.array(cat_boxes)
 
 
-ROOT_DIR = np.path(".")
+ROOT_DIR = Path(".")
 # save log
-MODEL_DIR = ROOT_DIR / 'logs'
+MODEL_DIR = os.path.join(ROOT_DIR,"logs")
 
-COCO_MODEL_PATH = ROOT_DIR / 'mask_rcnn_coco-h5'
-
-IMAGE_DIR = ROOT_DIR / 'images'
-
-VIDEO_SOURCE = 'test_images/Awesome Funny Pet Animals\' Life.mp4'
+COCO_MODEL_PATH = os.path.join(ROOT_DIR,"mask_rcnn_coco.h5")
 
 # download COCO's dataset
-if not COCO_MODEL_PATH.exist():
+if not os.path.exists(COCO_MODEL_PATH):
     mrcnn.utils.download_trained_weights(COCO_MODEL_PATH)
+
+IMAGE_DIR = os.path.join(ROOT_DIR,"images")
+
+VIDEO_SOURCE = os.path.join("test_images","Awesome Funny Pet Animals\' Life.mp4")
 
 # create model
 model = MaskRCNN(mode='inference', model_dir=MODEL_DIR, config=MaskRCNNConfig())

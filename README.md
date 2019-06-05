@@ -7,7 +7,7 @@
 * Copy the file pet_recognition.py to the directory with the Mask R-CNN
 * Create a test_images directory
 * Add to the directory test_images video file on which you want to recognize the cat
-* Change the file name in the pet_recognition.py file
+* Change the video source file path in the VIDEO_SOURCE in the pet_recognition.py
 * run the script through a terminal or console command
 
 Linux

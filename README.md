@@ -19,3 +19,10 @@ Windows
 ```
 python pet_recognition.py
 ``` 
+
+# What result is expected:
+* the video stream starts and breaks into frames
+* the neural network searches for a pet at each frame (the first appearance of the pet on the video and its subsequent movements are taken into account)
+* Count the number of frames on which there is no pet.
+* notification of the appearance in the frame of a pet
+* notification of pet leaving the frame

@@ -29,7 +29,7 @@ def get_cat_boxes(boxes, class_ids):
 def get_dog_boxes(boxes, class_ids):
     dog_boxes = []
     for i, box in enumerate(boxes):
-        if class_ids[i] in []:
+        if class_ids[i] in [17]:
             dog_boxes.append(box)
     
     return np.array(dog_boxes)
